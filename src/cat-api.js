@@ -1,5 +1,6 @@
 const api_key =
   'live_GOFdgZB1U3JaUt0QpXDdap3KE83KKlNjTSJr7mVB5lNxfONfeVEGI5Jzbqte4Tjx';
+
 const selectField = document.querySelector('.breed-select');
 const loader = document.querySelector('.loader')
 const errorMessage = document.querySelector('.error')
@@ -55,14 +56,18 @@ function render(data) {
   |============================
   | ч.2 - fetch на change по конкретній породі
   |============================
-*/
+*/ 
+let page = 1
 selectField.addEventListener('change', onChange);
 
 function onChange(e) {
   loader.classList.add('is-visible')
+   
   const option = e.currentTarget;
   const selectedOption = option.value;
   
+  page +=1
+
   fetchCatByBreed(selectedOption)
     .then(renderBreed)
     .catch(error => {
@@ -70,11 +75,18 @@ function onChange(e) {
       selectField.classList.remove('is-visible')
     errorMessage.classList.add('is-visible')
     });
+   
+  if (page > 2) {
+    image.remove()
+    catText.remove()
+  }
+  
 }
 
 export function fetchCatByBreed(breedId) {
+  
   return fetch(
-    `https://api.thecatapi.com/v1/images/search?limit=1&breed_ids=${breedId}`,
+    `https://api.thecatapi.com/v1/images/search?page=${page}&breed_ids=${breedId}`,
     {
       headers: {
         'x-api-key': api_key,
@@ -85,19 +97,27 @@ export function fetchCatByBreed(breedId) {
   });
 }
 
+let image
+let catText
+
+
+
 function renderBreed(data) {
+
   data = data.map(e => {
+
     const catImage = e;
-    const image = document.createElement('img');
+    image = document.createElement('img');
     image.src = `${catImage.url}`;
     image.classList.add('cat-image');
     catInfo.append(image);
 
     const breeds = catImage.breeds;
     for (const breed of breeds) {
-      const catText = document.createElement('div')
+      catText = document.createElement('div')
       catText.classList.add('cat-text')
       catInfo.append(catText)
+
       const name = document.createElement('h1');
       name.textContent = `${breed.name}`;
       name.classList.add('cat-name');
@@ -112,8 +132,16 @@ function renderBreed(data) {
       temper.textContent = `${breed.temperament}`;
       temper.classList.add('cat-temper');
       catText.append(temper);
+      
+     const temperHeader = document.createElement('span')
+      temperHeader.textContent = 'Temperament: '
+      temperHeader.classList.add('temper-header')
+      temper.prepend(temperHeader)
       loader.classList.remove('is-visible')
     }
+  
   });
+ 
 }
+
 

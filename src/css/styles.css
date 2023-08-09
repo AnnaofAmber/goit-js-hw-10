@@ -1,3 +1,6 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
 .hidden {
   position: absolute;
   top: 0;
@@ -30,14 +33,30 @@
 }
 .cat-info {
   display: flex;
+  gap: 50px;
   margin: 150px 30px;
 }
 .cat-image {
-  max-width: 400px;
+  max-width: 40%;
+  max-height: 500px;
+}
+.cat-text {
+  max-width: 60%;
+  margin-right: 50px;
 }
 .cat-name {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 40px;
 }
 .cat-descr {
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 15px;
 }
 .cat-temper {
+  font-size: 18px;
+}
+.temper-header {
+  font-weight: bold;
 }
