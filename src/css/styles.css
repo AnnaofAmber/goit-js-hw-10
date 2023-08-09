@@ -1,18 +1,43 @@
-
-
-
-.cat-info{
-    display: flex;
+.hidden {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translatey(-500%);
 }
-.cat-image{
-    max-width: 400px;
-}
-.cat-name{
 
+.is-visible {
+  transform: translatey(0);
 }
-.cat-descr{
-
+.breed-select {
+  margin-top: 30px;
+  margin-left: 30px;
+  min-height: 30px;
+  padding: 4px;
+  font-size: 18px;
 }
-.cat-temper{
 
+.loader {
+  margin-top: 80px;
+  margin-left: 30px;
+  margin-bottom: 0px;
+  font-size: 22px;
+}
+.error {
+  margin-top: 50px;
+  margin-left: 30px;
+  margin-bottom: 0px;
+  font-size: 22px;
+}
+.cat-info {
+  display: flex;
+  margin: 150px 30px;
+}
+.cat-image {
+  max-width: 400px;
+}
+.cat-name {
+}
+.cat-descr {
+}
+.cat-temper {
 }

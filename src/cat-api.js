@@ -1,6 +1,8 @@
 const api_key =
   'live_GOFdgZB1U3JaUt0QpXDdap3KE83KKlNjTSJr7mVB5lNxfONfeVEGI5Jzbqte4Tjx';
 const selectField = document.querySelector('.breed-select');
+const loader = document.querySelector('.loader')
+const errorMessage = document.querySelector('.error')
 const catInfo = document.querySelector('.cat-info');
 const url = 'https://api.thecatapi.com/v1/breeds';
 
@@ -9,20 +11,25 @@ const url = 'https://api.thecatapi.com/v1/breeds';
   | ч. 1 - наповнення селекту
   |============================
 */
+
+
 fetchBreeds()
   .then(render)
   .catch(error => {
-    console.log(error);
+    loader.classList.remove('is-visible')
+    errorMessage.classList.add('is-visible')
+    
   });
 
 export function fetchBreeds() {
+  loader.classList.add('is-visible')
   return fetch(url, {
     headers: {
       'x-api-key': api_key,
     },
   }).then(response => {
     return response.json();
-  });
+  })
 }
 
 function render(data) {
@@ -39,6 +46,8 @@ function render(data) {
     option.textContent = breed.name;
     option.classList.add('option-breed');
     selectField.append(option);
+    loader.classList.remove('is-visible')
+    selectField.classList.add('is-visible')
   }
 }
 
@@ -50,19 +59,22 @@ function render(data) {
 selectField.addEventListener('change', onChange);
 
 function onChange(e) {
+  loader.classList.add('is-visible')
   const option = e.currentTarget;
   const selectedOption = option.value;
-
+  
   fetchCatByBreed(selectedOption)
     .then(renderBreed)
     .catch(error => {
-      console.log(error);
+      loader.classList.remove('is-visible')
+      selectField.classList.remove('is-visible')
+    errorMessage.classList.add('is-visible')
     });
 }
 
 export function fetchCatByBreed(breedId) {
   return fetch(
-    `https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`,
+    `https://api.thecatapi.com/v1/images/search?limit=1&breed_ids=${breedId}`,
     {
       headers: {
         'x-api-key': api_key,
@@ -74,7 +86,6 @@ export function fetchCatByBreed(breedId) {
 }
 
 function renderBreed(data) {
-  console.log(data);
   data = data.map(e => {
     const catImage = e;
     const image = document.createElement('img');
@@ -84,20 +95,24 @@ function renderBreed(data) {
 
     const breeds = catImage.breeds;
     for (const breed of breeds) {
+      const catText = document.createElement('div')
+      catText.classList.add('cat-text')
+      catInfo.append(catText)
       const name = document.createElement('h1');
       name.textContent = `${breed.name}`;
       name.classList.add('cat-name');
-      catInfo.append(name);
+      catText.append(name);
 
       const descr = document.createElement('p');
       descr.textContent = `${breed.description}`;
       descr.classList.add('cat-descr');
-      catInfo.append(descr);
+      catText.append(descr);
 
       const temper = document.createElement('p');
       temper.textContent = `${breed.temperament}`;
       temper.classList.add('cat-temper');
-      catInfo.append(temper);
+      catText.append(temper);
+      loader.classList.remove('is-visible')
     }
   });
 }
