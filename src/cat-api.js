@@ -1,11 +1,19 @@
+
+import SlimSelect from 'slim-select'
+import 'slim-select/dist/slimselect.css'
+import Notiflix from 'notiflix';
+
+
 const api_key =
-  'live_GOFdgZB1U3JaUt0QpXDdap3KE83KKlNjTSJr7mVB5lNxfONfeVEGI5Jzbqte4Tjx';
+  'live_tdsN5AmbBwkKYcE40ygpqWKl0kv76r76ReliB0DRx4R4Xoc74wa0rlMsOiihJCTG';
 
 const selectField = document.querySelector('.breed-select');
 const loader = document.querySelector('.loader')
 const errorMessage = document.querySelector('.error')
 const catInfo = document.querySelector('.cat-info');
 const url = 'https://api.thecatapi.com/v1/breeds';
+
+ 
 
 /**
   |============================
@@ -17,13 +25,14 @@ const url = 'https://api.thecatapi.com/v1/breeds';
 fetchBreeds()
   .then(render)
   .catch(error => {
-    loader.classList.remove('is-visible')
-    errorMessage.classList.add('is-visible')
+    loader.classList.remove('loader-is-visible')
+    Notiflix.Notify.failure('Oops! Something went wrong! Try reloading the page!');
     
   });
 
 export function fetchBreeds() {
-  loader.classList.add('is-visible')
+  
+  loader.classList.add('loader-is-visible')
   return fetch(url, {
     headers: {
       'x-api-key': api_key,
@@ -40,17 +49,30 @@ function render(data) {
   for (let i = 0; i < storedBreeds.length; i += 1) {
     const breed = storedBreeds[i];
     let option = document.createElement('option');
-
+    
     if (!breed.image) continue;
-
+    
     option.value = breed.id;
     option.textContent = breed.name;
     option.classList.add('option-breed');
+    option.setAttribute('id', 'option-breed')
     selectField.append(option);
-    loader.classList.remove('is-visible')
+     loader.classList.remove('loader-is-visible')
     selectField.classList.add('is-visible')
+    
+ 
   }
+  selectStyled()
+  
 }
+
+function selectStyled() {
+ new SlimSelect({
+     select: selectField,
+ })
+  
+}
+
 
 /**
   |============================
@@ -61,8 +83,7 @@ let page = 1
 selectField.addEventListener('change', onChange);
 
 function onChange(e) {
-  loader.classList.add('is-visible')
-   
+  loader.classList.add('loader-is-visible')
   const option = e.currentTarget;
   const selectedOption = option.value;
   
@@ -71,9 +92,10 @@ function onChange(e) {
   fetchCatByBreed(selectedOption)
     .then(renderBreed)
     .catch(error => {
-      loader.classList.remove('is-visible')
+
+      loader.classList.remove('loader-is-visible')
       selectField.classList.remove('is-visible')
-    errorMessage.classList.add('is-visible')
+     Notiflix.Notify.failure('Oops! Something went wrong! Try reloading the page!');
     });
    
   if (page > 2) {
@@ -103,7 +125,7 @@ let catText
 
 
 function renderBreed(data) {
-
+loader.classList.remove('loader-is-visible')
   data = data.map(e => {
 
     const catImage = e;

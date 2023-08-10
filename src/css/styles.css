@@ -1,5 +1,8 @@
 body {
   font-family: 'Roboto', sans-serif;
+  background-color: rgba(191, 208, 246, 0.194);
+}
+.ss-list {
 }
 .hidden {
   position: absolute;
@@ -12,6 +15,7 @@ body {
   transform: translatey(0);
 }
 .breed-select {
+  max-width: 500px;
   margin-top: 30px;
   margin-left: 30px;
   min-height: 30px;
@@ -19,12 +23,49 @@ body {
   font-size: 18px;
 }
 
-.loader {
+/* .loader {
   margin-top: 80px;
   margin-left: 30px;
   margin-bottom: 0px;
   font-size: 22px;
+} */
+
+.loader {
+  font-size: 22px;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border-top: 4px solid #fff;
+  border-right: 4px solid transparent;
 }
+.loader-is-visible {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+  animation: rotation 1s linear infinite;
+}
+.loader::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border-bottom: 4px solid darkblue;
+  border-left: 4px solid transparent;
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .error {
   margin-top: 50px;
   margin-left: 30px;
@@ -32,6 +73,7 @@ body {
   font-size: 22px;
 }
 .cat-info {
+  position: relative;
   display: flex;
   gap: 50px;
   margin: 150px 30px;
