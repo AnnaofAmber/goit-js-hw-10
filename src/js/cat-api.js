@@ -38,6 +38,9 @@ export function fetchBreeds() {
       'x-api-key': api_key,
     },
   }).then(response => {
+    if (!response.ok) {
+      throw new Error(response.status)
+    }
     return response.json();
   })
 }
@@ -94,7 +97,6 @@ function onChange(e) {
     .catch(error => {
 
       loader.classList.remove('loader-is-visible')
-      selectField.classList.remove('is-visible')
      Notiflix.Notify.failure('Oops! Something went wrong! Try reloading the page!');
     });
    
@@ -115,6 +117,9 @@ export function fetchCatByBreed(breedId) {
       },
     }
   ).then(response => {
+    if (!response.ok) {
+      throw new Error(response.status)
+    }
     return response.json();
   });
 }
